@@ -24,7 +24,8 @@ func NewResizableBuffer(b []byte) *ResizableBuffer {
 
 func (b *ResizableBuffer) ensureCapacity(n int) {
 	if len(b.buffer)-b.offset < n {
-		buf := make([]byte, n+len(b.buffer))
+		lt2 := (n + len(b.buffer)) * 2
+		buf := make([]byte, lt2, lt2)
 		copy(buf, b.buffer)
 		b.buffer = buf
 	}
@@ -138,7 +139,8 @@ func (b *ResizableBuffer) Len() int {
 
 func (b *ResizableBuffer) prependStart(n int, f func(b []byte)) *ResizableBuffer {
 	if len(b.buffer)-b.offset < n {
-		buf := make([]byte, n+len(b.buffer), n+len(b.buffer))
+		lt2 := (n + len(b.buffer)) * 2
+		buf := make([]byte, lt2, lt2)
 		copy(buf[n:], b.buffer)
 		b.buffer = buf
 	} else {
